@@ -1,14 +1,29 @@
+printNow ('Welcome to the Movie Transformer!')
+printNow ('Your options include:'+'\n'+'1--Negation'+'\n'+'2--Flip across vertical axis'+'\n'+'3--Grayscale'+'\n'+'4--Edge Detection'+'\n'+'5--Pure Black & White')
+selection = input('Please enter your selection now :')
+
+printNow ('You entered ' + str(selection))
+
+#makeMovieFromInitialFile() to make movie from frames
+#testString = "F:/205/project 3/tester pix/test0000.jpg"
+#result = makeMovieFromInitialFile(testString)
+#playMovie(result)
+
 def reversePicture():
-  revFile=pickAFile()
-  revPict=makePicture(revFile)
-  width=getWidth(revPict)
-  height=getHeight(revPict)
-  makeRevPic=makeEmptyPicture(width,height)
-  #Now, do the actual copying
-  for x in range(0, width):
-    for y in range(0, height):
-      color=getColor(getPixel(revPict, x, y))
-      setColor(getPixel(makeRevPic,width-x-1, y),color)
-  show(revPict)
-  show(makeRevPic)
-  return makeRevPic
+    revFile=pickAFile()
+    revPict=makePicture(revFile)
+    width=getWidth(revPict)
+    height=getHeight(revPict)
+    makeRevPic=makeEmptyPicture(width,height)
+    #Now, do the actual copying
+    for x in range(0, width):
+      for y in range(0, height):
+        color=getColor(getPixel(revPict, x, y))
+        setColor(getPixel(makeRevPic,width-x-1, y),color)
+    show(revPict)
+    show(makeRevPic)
+    return makeRevPic
+
+if selection == 2:
+  result = reversePicture()
+  return result
