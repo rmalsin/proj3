@@ -13,6 +13,7 @@ printNow('Select desired folder containing frames to be processed')
 def reversePicture():
     #revFile=pickAFile()
     folDir = setMediaPath()
+    printNow('DO NOT TOUCH FILE EXPLORER UNTIL COMPLETE')
     for file in os.listdir(folDir):
       printNow('Now processing: '+str(file))
       revPict=makePicture(file)
@@ -29,6 +30,7 @@ def reversePicture():
       #return makeRevPic
       printNow('Now saving:'+str(file))
       writePictureTo(makeRevPic, 'REV'+str(file))
+    printNow('Process COMPLETE')
 
 if selection == 1:
   something
