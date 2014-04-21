@@ -11,4 +11,32 @@ def reversePicture():
       setColor(getPixel(makeRevPic,width-x-1, y),color)
   show(revPict)
   show(makeRevPic)
-  return makeRevPic
+  return makeRevPic  
+  
+def blurredPicture():
+  blurFile=pickAFile()
+  blurPict=makePicture(blurFile)
+  width=getWidth(blurPict)
+  height=getHeight(blurPict)
+  makeBlurPic=makeEmptyPicture(width-10,height)
+  for px in getPixels(makeBlurPic):
+    x=getX(px)
+    y=getY(px)
+    if (x+10<width):
+      rTotal=0
+      gTotal=0
+      bTotal=0
+      for i in range(0,10):
+         origpx=getPixel(blurPict,x+i,y)
+         rTotal=rTotal+getRed(origpx)
+         gTotal=gTotal+getGreen(origpx)
+         bTotal=bTotal+getBlue(origpx)
+      rAverage=(rTotal/10)
+      gAverage=(gTotal/10)
+      bAverage=(bTotal/10)
+      setRed(px,rAverage)
+      setGreen(px,gAverage)
+      setBlue(px,bAverage)
+  show(blurPict)
+  show(makeBlurPic)
+  return makeBlurPic
