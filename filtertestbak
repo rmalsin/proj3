@@ -8,7 +8,7 @@ printNow ('You entered ' + str(selection))
 #testString = "F:/205/project 3/tester pix/test0000.jpg"
 #result = makeMovieFromInitialFile(testString)
 #playMovie(result)
-
+#something about os.listdir() and setMediaPath
 def reversePicture():
     revFile=pickAFile()
     revPict=makePicture(revFile)
@@ -26,4 +26,4 @@ def reversePicture():
 
 if selection == 2:
   result = reversePicture()
-  return result
+  
