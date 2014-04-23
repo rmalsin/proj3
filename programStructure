@@ -1,14 +1,10 @@
 printNow ('Welcome to the Movie Transformer!')
 printNow ('Your options include:'+'\n'+'1--Negation'+'\n'+'2--Flip across vertical axis'+'\n'+'3--Grayscale'+'\n'+'4--Edge Detection'+'\n'+'5--Pure Black & White')
-selection = input('Please enter your selection now :')
+selection = input('Please enter your selection now : ')
 
 printNow ('You entered ' + str(selection))
 printNow('Select desired folder containing frames to be processed')
 
-#makeMovieFromInitialFile() to make movie from frames
-#testString = "F:/205/project 3/tester pix/test0000.jpg"
-#result = makeMovieFromInitialFile(testString)
-#playMovie(result)
 #something about os.listdir() and setMediaPath
 def reversePicture():
     #revFile=pickAFile()
@@ -28,18 +24,23 @@ def reversePicture():
       #show(revPict)
       #show(makeRevPic)
       #return makeRevPic
-      printNow('Now saving:'+str(file))
+      printNow('Now saving: '+str(file))
       writePictureTo(makeRevPic, 'REV'+str(file))
     printNow('Process COMPLETE')
-
+#action to take depending on client's selection
 if selection == 1:
   something
 elif selection == 2:
-  reversePicture()
-  
+  #reversePicture()
+  printNow('Now select the first frame to convert to movie clip')
+  newMovie = makeMovieFromInitialFile(pickAFile())#makeMovieFromInitialFile() to make movie from frames
+  playMovie(newMovie)
+  writeAVI(newMovie, folDir, 24)
 elif selection == 3:
   something2
 elif selection == 4:
   something3
 else:
   something4
+  
+  
