@@ -41,4 +41,17 @@ def blurredPicture():
   show(makeBlurPic)
   return makeBlurPic
   
-  
+def whitenedPicture():    
+  whiteFile=pickAFile()
+  whitePict=makePicture(whiteFile)
+  width=getWidth(whitePict)
+  height=getHeight(whitePict)
+  makeWhitePic=makeEmptyPicture(width,height)
+  for px in getPixels(makeWhitePic):
+    newRed = 255*.2 + (getRed(whitePict)*(1-.2))
+    newGreen = 255*.2 + (getGreen(whitePict)*(1-.2))
+    newBlue = 255*.2 + (getBlue(whitePict)*(1-.2))
+    setColor(makeWhitePic, makeColor(newRed, newGreen, newBlue))
+  show(whitePict)
+  show(makeWhitePic)
+  return makeWhitePic
