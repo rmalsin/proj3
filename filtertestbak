@@ -47,11 +47,15 @@ def whitenedPicture():
   width=getWidth(whitePict)
   height=getHeight(whitePict)
   makeWhitePic=makeEmptyPicture(width,height)
-  for px in getPixels(makeWhitePic):
-    newRed = 255*.2 + (getRed(whitePict)*(1-.2))
-    newGreen = 255*.2 + (getGreen(whitePict)*(1-.2))
-    newBlue = 255*.2 + (getBlue(whitePict)*(1-.2))
-    setColor(makeWhitePic, makeColor(newRed, newGreen, newBlue))
   show(whitePict)
+  for px in getPixels(whitePict):
+    newRed = (255*.2) + (getRed(px)*(.8))
+    newGreen = (255*.2) + (getGreen(px)*(.8))
+    newBlue = (255*.2) + (getBlue(px)*(.8))
+    setColor(px, makeColor(newRed, newGreen, newBlue))
+  for x in range(0, width):
+    for y in range(0, height):
+      color=getColor(getPixel(whitePict, x, y))
+      setColor(getPixel(makeWhitePic,x, y),color)
   show(makeWhitePic)
   return makeWhitePic
