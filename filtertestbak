@@ -72,11 +72,29 @@ def greyscalePicture():
     greyGreen=getGreen(px)*0.587
     greyBlue=getBlue(px)*0.114
     greyColor=greyRed + greyGreen + greyBlue
-    makeGrey=makeColor(greyColor, greyColor, greyColor)
-    setColor (px, makeGrey)
+    setColor(px, makeColor(greyColor, greyColor, greyColor))
   for x in range(0, width):
     for y in range(0, height):
       color=getColor(getPixel(greyPict, x, y))
       setColor(getPixel(makeGreyPic,x, y),color)
   show(makeGreyPic)
   return makeGreyPic
+
+def negativePicture():    
+  negFile=pickAFile()
+  negPict=makePicture(negFile)
+  width=getWidth(negPict)
+  height=getHeight(negPict)
+  makeNegPic=makeEmptyPicture(width,height)
+  show(negPict)
+  for px in getPixels(negPict):
+    red=getRed(px)
+    green=getGreen(px)
+    blue=getBlue(px)
+    setColor (px, makeColor(255-red, 255-green, 255-blue))
+  for x in range(0, width):
+    for y in range(0, height):
+      color=getColor(getPixel(negPict, x, y))
+      setColor(getPixel(makeNegPic,x, y),color)
+  show(makeNegPic)
+  return makeNegPic
