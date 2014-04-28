@@ -41,24 +41,24 @@ def blurredPicture():
   show(makeBlurPic)
   return makeBlurPic
   
-def whitenedPicture():    
-  whiteFile=pickAFile()
-  whitePict=makePicture(whiteFile)
-  width=getWidth(whitePict)
-  height=getHeight(whitePict)
-  makeWhitePic=makeEmptyPicture(width,height)
-  show(whitePict)
-  for px in getPixels(whitePict):
+def fadedPicture():    
+  fadeFile=pickAFile()
+  fadePict=makePicture(fadeFile)
+  width=getWidth(fadePict)
+  height=getHeight(fadePict)
+  makeFadedPic=makeEmptyPicture(width,height)
+  show(fadePict)
+  for px in getPixels(fadePict):
     newRed = (255*.3) + (getRed(px)*(.7))
     newGreen = (255*.3) + (getGreen(px)*(.7))
     newBlue = (255*.3) + (getBlue(px)*(.7))
     setColor(px, makeColor(newRed, newGreen, newBlue))
   for x in range(0, width):
     for y in range(0, height):
-      color=getColor(getPixel(whitePict, x, y))
-      setColor(getPixel(makeWhitePic,x, y),color)
-  show(makeWhitePic)
-  return makeWhitePic
+      color=getColor(getPixel(fadePict, x, y))
+      setColor(getPixel(makeFadedPic,x, y),color)
+  show(makeFadedPic)
+  return makeFadedPic
 
 def greyscalePicture():    
   greyFile=pickAFile()
@@ -98,3 +98,26 @@ def negativePicture():
       setColor(getPixel(makeNegPic,x, y),color)
   show(makeNegPic)
   return makeNegPic
+  
+def blackWhitePicture():    
+  bwFile=pickAFile()
+  bwPict=makePicture(bwFile)
+  width=getWidth(bwPict)
+  height=getHeight(bwPict)
+  makeBlackWhitePic=makeEmptyPicture(width,height)
+  show(bwPict)
+  for px in getPixels(bwPict):
+    red=getRed(px)
+    green=getGreen(px)
+    blue=getBlue(px)
+    bwIndicator=((red+blue+green)/3)
+    if bwIndicator > 127:
+      setColor (px, makeColor(255, 255, 255))
+    else:
+      setColor (px, makeColor(0, 0, 0))
+  for x in range(0, width):
+    for y in range(0, height):
+      color=getColor(getPixel(bwPict, x, y))
+      setColor(getPixel(makeBlackWhitePic,x, y),color)
+  show(makeBlackWhitePic)
+  return makeBlackWhitePic
