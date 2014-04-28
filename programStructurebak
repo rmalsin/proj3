@@ -1,4 +1,5 @@
 printNow ('Welcome to the Movie Transformer!')
+
 printNow ('Your options include:'+'\n'+'1--Negation'+'\n'+'2--Flip across vertical axis'+'\n'+'3--Grayscale'+'\n'+'4--Edge Detection'+'\n'+'5--Pure Black & White')
 selection = input('Please enter your selection now : ')
 
@@ -34,8 +35,8 @@ elif selection == 2:
   #reversePicture()
   printNow('Now select the first frame to convert to movie clip')
   newMovie = makeMovieFromInitialFile(pickAFile())#makeMovieFromInitialFile() to make movie from frames
-  playMovie(newMovie)
-  writeAVI(newMovie, folDir, 24)
+  playMovie(newMovie)#opens explorer window, where you can then select to write as AVI movie
+  writeAVI(newMovie, 'rev-movie.avi', 24)
 elif selection == 3:
   something2
 elif selection == 4:
