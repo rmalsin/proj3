@@ -5,11 +5,8 @@ selection = input('Please enter your selection now :')
 printNow ('You entered ' + str(selection))
 printNow('Select desired folder containing frames to be processed')
 folDir = setMediaPath()
-#makeMovieFromInitialFile() to make movie from frames
-#testString = "F:/205/project 3/tester pix/test0000.jpg"
-#result = makeMovieFromInitialFile(testString)
-#playMovie(result)
-#something about os.listdir() and setMediaPath
+printNow('DO NOT TOUCH FILE EXPLORER UNTIL COMPLETED')
+
 
 def movieMaker():
   printNow('Now select first modified frame to use for movie')
@@ -64,7 +61,6 @@ def blurredPicture(folDir):
 if selection == 1:
   something
 elif selection == 2:
-  printNow('DO NOT TOUCH FILE EXPLORER UNTIL COMPLETED')
   reversePicture(folDir)
   movieMaker(folDir)
 elif selection == 3:
@@ -72,9 +68,11 @@ elif selection == 3:
 elif selection == 4:
   something3
 elif selection == 5:
-  printNow('DO NOT TOUCH FILE EXPLORER UNTIL COMPLETED')
+  something4
+elif selection == 6:
   blurredPicture(folDir)
   movieMaker(folDir)
- 
+elif selection == 7:
+  something5
 else:
-  something4
+  something6
