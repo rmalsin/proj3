@@ -49,9 +49,9 @@ def whitenedPicture():
   makeWhitePic=makeEmptyPicture(width,height)
   show(whitePict)
   for px in getPixels(whitePict):
-    newRed = (255*.2) + (getRed(px)*(.8))
-    newGreen = (255*.2) + (getGreen(px)*(.8))
-    newBlue = (255*.2) + (getBlue(px)*(.8))
+    newRed = (255*.3) + (getRed(px)*(.7))
+    newGreen = (255*.3) + (getGreen(px)*(.7))
+    newBlue = (255*.3) + (getBlue(px)*(.7))
     setColor(px, makeColor(newRed, newGreen, newBlue))
   for x in range(0, width):
     for y in range(0, height):
@@ -59,3 +59,24 @@ def whitenedPicture():
       setColor(getPixel(makeWhitePic,x, y),color)
   show(makeWhitePic)
   return makeWhitePic
+
+def greyscalePicture():    
+  greyFile=pickAFile()
+  greyPict=makePicture(greyFile)
+  width=getWidth(greyPict)
+  height=getHeight(greyPict)
+  makeGreyPic=makeEmptyPicture(width,height)
+  show(greyPict)
+  for px in getPixels(greyPict):
+    greyRed=getRed(px)*0.299
+    greyGreen=getGreen(px)*0.587
+    greyBlue=getBlue(px)*0.114
+    greyColor=greyRed + greyGreen + greyBlue
+    makeGrey=makeColor(greyColor, greyColor, greyColor)
+    setColor (px, makeGrey)
+  for x in range(0, width):
+    for y in range(0, height):
+      color=getColor(getPixel(greyPict, x, y))
+      setColor(getPixel(makeGreyPic,x, y),color)
+  show(makeGreyPic)
+  return makeGreyPic
