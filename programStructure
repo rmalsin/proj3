@@ -1,16 +1,23 @@
 printNow ('Welcome to the Movie Transformer!')
-
-printNow ('Your options include:'+'\n'+'1--Negation'+'\n'+'2--Flip across vertical axis'+'\n'+'3--Grayscale'+'\n'+'4--Edge Detection'+'\n'+'5--Pure Black & White')
-selection = input('Please enter your selection now : ')
+printNow ('Your options include:'+'\n'+'1--Negation'+'\n'+'2--Flip across vertical axis'+'\n'+'3--Grayscale'+'\n'+'4--Edge Detection'+'\n'+'5--Pure Black & White'+'\n'+'6--Blur Effect'+'\n'+'7--Faded Effect')
+selection = input('Please enter your selection now :')
 
 printNow ('You entered ' + str(selection))
 printNow('Select desired folder containing frames to be processed')
-
+folDir = setMediaPath()
+#makeMovieFromInitialFile() to make movie from frames
+#testString = "F:/205/project 3/tester pix/test0000.jpg"
+#result = makeMovieFromInitialFile(testString)
+#playMovie(result)
 #something about os.listdir() and setMediaPath
-def reversePicture():
-    #revFile=pickAFile()
-    folDir = setMediaPath()
-    printNow('DO NOT TOUCH FILE EXPLORER UNTIL COMPLETE')
+
+def movieMaker():
+  printNow('Now select first modified frame to use for movie')
+  newMovie = makeMovieFromInitialFile(pickAFile())
+  playMovie(newMovie)
+  writeAVI(newMovie, folDir, 24)
+
+def reversePicture(folDir):
     for file in os.listdir(folDir):
       printNow('Now processing: '+str(file))
       revPict=makePicture(file)
@@ -22,26 +29,52 @@ def reversePicture():
         for y in range(0, height):
           color=getColor(getPixel(revPict, x, y))
           setColor(getPixel(makeRevPic,width-x-1, y),color)
-      #show(revPict)
-      #show(makeRevPic)
-      #return makeRevPic
       printNow('Now saving: '+str(file))
       writePictureTo(makeRevPic, 'REV'+str(file))
-    printNow('Process COMPLETE')
-#action to take depending on client's selection
+      
+def blurredPicture(folDir):
+  for file in os.listdir(folDir):
+    printNow('Now processing: '+str(file))
+    blurPict=makePicture(file)
+    width=getWidth(blurPict)
+    height=getHeight(blurPict)
+    makeBlurPic=makeEmptyPicture(width-10,height)
+    for px in getPixels(makeBlurPic):
+      x=getX(px)
+      y=getY(px)
+      if (x+10<width):
+        rTotal=0
+        gTotal=0
+        bTotal=0
+        for i in range(0,10):
+           origpx=getPixel(blurPict,x+i,y)
+           rTotal=rTotal+getRed(origpx)
+           gTotal=gTotal+getGreen(origpx)
+           bTotal=bTotal+getBlue(origpx)
+        rAverage=(rTotal/10)
+        gAverage=(gTotal/10)
+        bAverage=(bTotal/10)
+        setRed(px,rAverage)
+        setGreen(px,gAverage)
+        setBlue(px,bAverage)
+    printNow('Now saving: '+str(file))
+    writePictureTo(makeRevPic, 'BLUR'+str(file))
+
+
 if selection == 1:
   something
 elif selection == 2:
-  #reversePicture()
-  printNow('Now select the first frame to convert to movie clip')
-  newMovie = makeMovieFromInitialFile(pickAFile())#makeMovieFromInitialFile() to make movie from frames
-  playMovie(newMovie)#opens explorer window, where you can then select to write as AVI movie
-  writeAVI(newMovie, 'rev-movie.avi', 24)
+  printNow('DO NOT TOUCH FILE EXPLORER UNTIL COMPLETED')
+  reversePicture(folDir)
+  movieMaker(folDir)
 elif selection == 3:
   something2
 elif selection == 4:
   something3
+elif selection == 5:
+  printNow('DO NOT TOUCH FILE EXPLORER UNTIL COMPLETED')
+  blurredPicture(folDir)
+  movieMaker(folDir)
+ 
 else:
   something4
-  
-  
