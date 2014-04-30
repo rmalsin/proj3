@@ -112,12 +112,39 @@ def blackWhitePicture():
     blue=getBlue(px)
     bwIndicator=((red+blue+green)/3)
     if bwIndicator > 127:
-      setColor (px, makeColor(255, 255, 255))
+      setColor (px, makeColor(white))
     else:
-      setColor (px, makeColor(0, 0, 0))
+      setColor (px, makeColor(black))
   for x in range(0, width):
     for y in range(0, height):
       color=getColor(getPixel(bwPict, x, y))
       setColor(getPixel(makeBlackWhitePic,x, y),color)
   show(makeBlackWhitePic)
   return makeBlackWhitePic
+  
+def edgeDetection():
+  edgeFile=pickAFile()
+  edgePict=makePicture(edgeFile)
+  width=getWidth(edgePict)
+  height=getHeight(edgePict)
+  makeEdgePic=makeEmptyPicture(width,height)
+  for x in range(0, width):
+    for y in range(0, height):
+      color=getColor(getPixel(edgePict, x, y))
+      setColor(getPixel(makeEdgePic,x, y),color)
+  show(edgePict)
+  for x in range(0, width-1):
+    for y in range(0, height-1):
+      px = getPixel(makeEdgePic, x, y)
+      right = getPixel(makeEdgePic, x + 1, y)
+      below = getPixel(makeEdgePic, x, y + 1)
+      luminance=lambda px: (getRed(px)*0.299)+(getGreen(px)*0.587)+(getBlue(px)*0.114)
+      lumOverall=luminance(px)
+      lumRight=luminance(right)
+      lumBelow=luminance(below)
+      if abs(lumRight-lumOverall) > 5 and abs(lumBelow-lumOverall) > 5:
+        setColor(px, black)
+      else:
+        setColor(px, white)
+  show(makeEdgePic)
+  return makeEdgePic  
