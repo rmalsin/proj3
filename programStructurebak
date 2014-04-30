@@ -1,6 +1,6 @@
 printNow ('Welcome to the Movie Transformer!')
 printNow ('Your options include:'+'\n'+'1--Negation'+'\n'+'2--Flip across vertical axis'+'\n'+'3--Grayscale'+'\n'+'4--Edge Detection'+'\n'+'5--Pure Black & White'+'\n'+'6--Blur Effect'+'\n'+'7--Faded Effect')
-selection = input('Please enter your selection now :')
+selection = input('Please enter your selection now: ')
 
 printNow ('You entered ' + str(selection))
 printNow('Select desired folder containing frames to be processed')
@@ -13,6 +13,27 @@ def movieMaker(folDir):
   newMovie = makeMovieFromInitialFile(pickAFile())
   playMovie(newMovie)
   writeAVI(newMovie, folDir, 24)
+
+def negativePicture(folDir):    
+  for file in os.listdir(folDir):
+    printNow('Now processing: '+str(file))
+    negPict=makePicture(file)
+    width=getWidth(negPict)
+    height=getHeight(negPict)
+    makeNegPic=makeEmptyPicture(width,height)
+    #show(negPict)
+    for px in getPixels(negPict):
+      red=getRed(px)
+      green=getGreen(px)
+      blue=getBlue(px)
+      setColor (px, makeColor(255-red, 255-green, 255-blue))
+    for x in range(0, width):
+      for y in range(0, height):
+        color=getColor(getPixel(negPict, x, y))
+        setColor(getPixel(makeNegPic,x, y),color)
+    printNow('Now saving: '+str(file))
+    writePictureTo(makeNegPic, 'NEG'+str(file))
+  printNow('PROCESS COMPLETE')
 
 def reversePicture(folDir):
     for file in os.listdir(folDir):
@@ -28,6 +49,7 @@ def reversePicture(folDir):
           setColor(getPixel(makeRevPic,width-x-1, y),color)
       printNow('Now saving: '+str(file))
       writePictureTo(makeRevPic, 'REV'+str(file))
+    printNow('PROCESS COMPLETE')
       
 def blurredPicture(folDir):
   for file in os.listdir(folDir):
@@ -56,6 +78,7 @@ def blurredPicture(folDir):
         setBlue(px,bAverage)
     printNow('Now saving: '+str(file))
     writePictureTo(makeRevPic, 'BLUR'+str(file))
+  printNow('PROCESS COMPLETE')
 
 def fadedPicture(folDir):
   for file in os.listdir(folDir):
@@ -74,13 +97,13 @@ def fadedPicture(folDir):
       for y in range(0, height):
         color=getColor(getPixel(fadePict, x, y))
         setColor(getPixel(makeFadedPic,x, y),color)
-    #show(makeFadedPic)
-    #return makeFadedPic
     printNow('Now saving: '+str(file))
     writePictureTo(makeFadedPic, 'FADE'+str(file))
+  printNow('PROCESS COMPLETE')
 
 if selection == 1:
-  something
+  negativePicture(folDir)
+  movieMaker(folDir)
 elif selection == 2:
   reversePicture(folDir)
   movieMaker(folDir)
