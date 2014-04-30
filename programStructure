@@ -1,5 +1,5 @@
 printNow ('Welcome to the Movie Transformer!')
-printNow ('Your options include:'+'\n'+'1--Negation'+'\n'+'2--Flip across vertical axis'+'\n'+'3--Grayscale'+'\n'+'4--Edge Detection'+'\n'+'5--Pure Black & White'+'\n'+'6--Blur Effect'+'\n'+'7--Faded Effect')
+printNow ('Your options include:'+'\n'+'1--Negation'+'\n'+'2--Flip across vertical axis'+'\n'+'3--Grayscale'+'\n'+'4--Edge Detection'+'\n'+'5--Pure Black & White(AKA Stamp Effect)'+'\n'+'6--Blur Effect'+'\n'+'7--Faded Effect')
 selection = input('Please enter your selection now: ')
 
 printNow ('You entered ' + str(selection))
@@ -42,7 +42,6 @@ def reversePicture(folDir):
       width=getWidth(revPict)
       height=getHeight(revPict)
       makeRevPic=makeEmptyPicture(width,height)
-      #Now, do the actual copying
       for x in range(0, width):
         for y in range(0, height):
           color=getColor(getPixel(revPict, x, y))
@@ -51,6 +50,27 @@ def reversePicture(folDir):
       writePictureTo(makeRevPic, 'REV'+str(file))
     printNow('PROCESS COMPLETE')
       
+def greyscalePicture(folDir):    
+  for file in os.listdir(folDir):
+    printNow('Now processing: '+str(file))
+    greyPict=makePicture(file)
+    width=getWidth(greyPict)
+    height=getHeight(greyPict)
+    makeGreyPic=makeEmptyPicture(width,height)
+    for px in getPixels(greyPict):
+      greyRed=getRed(px)*0.299
+      greyGreen=getGreen(px)*0.587
+      greyBlue=getBlue(px)*0.114
+      greyColor=greyRed + greyGreen + greyBlue
+      setColor(px, makeColor(greyColor, greyColor, greyColor))
+    for x in range(0, width):
+      for y in range(0, height):
+        color=getColor(getPixel(greyPict, x, y))
+        setColor(getPixel(makeGreyPic,x, y),color)
+    printNow('Now saving: '+str(file))
+    writePictureTo(makeGreyPic, 'GREY'+str(file))
+  printNow('PROCESS COMPLETE')
+
 def blurredPicture(folDir):
   for file in os.listdir(folDir):
     printNow('Now processing: '+str(file))
