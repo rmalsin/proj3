@@ -121,6 +121,30 @@ def fadedPicture(folDir):
     writePictureTo(makeFadedPic, 'FADE'+str(file))
   printNow('PROCESS COMPLETE')
 
+def blackWhitePicture(folDir):
+  for file in os.listdir(folDir):
+    printNow('Now processing: '+str(file))    
+    bwPict=makePicture(file)
+    width=getWidth(bwPict)
+    height=getHeight(bwPict)
+    makeBlackWhitePic=makeEmptyPicture(width,height)
+    for px in getPixels(bwPict):
+      red=getRed(px)
+      green=getGreen(px)
+      blue=getBlue(px)
+      bwIndicator=((red+blue+green)/3)
+      if bwIndicator > 127:
+        setColor (px, makeColor(255, 255, 255))
+      else:
+        setColor (px, makeColor(0, 0, 0))
+    for x in range(0, width):
+      for y in range(0, height):
+        color=getColor(getPixel(bwPict, x, y))
+        setColor(getPixel(makeBlackWhitePic,x, y),color)
+    printNow('Now saving: '+str(file))
+    writePictureTo(makeBlackWhitePic, 'BW'+str(file))
+  printNow('PROCESS COMPLETE')
+
 if selection == 1:
   negativePicture(folDir)
   movieMaker(folDir)
@@ -128,11 +152,13 @@ elif selection == 2:
   reversePicture(folDir)
   movieMaker(folDir)
 elif selection == 3:
-  something2
+  greyscalePicture(folDir)
+  movieMaker(folDir)
 elif selection == 4:
   something3
 elif selection == 5:
-  something4
+  blackWhitePicture(folDir)
+  movieMaker(folDir)
 elif selection == 6:
   blurredPicture(folDir)
   movieMaker(folDir)
