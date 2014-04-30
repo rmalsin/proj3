@@ -150,6 +150,34 @@ def blackWhitePicture(folDir):
     printNow('Now saving: '+str(file))
     writePictureTo(makeBlackWhitePic, 'BW'+str(file))
   printNow('PROCESS COMPLETE')
+  
+def edgeDetection(folDir):
+  for file in os.listdir(folDir):
+    printNow('Now processing: '+str(file))
+    edgePict=makePicture(file)
+    width=getWidth(edgePict)
+    height=getHeight(edgePict)
+    makeEdgePic=makeEmptyPicture(width,height)
+    for x in range(0, width):
+      for y in range(0, height):
+        color=getColor(getPixel(edgePict, x, y))
+        setColor(getPixel(makeEdgePic,x, y),color)
+    for x in range(0, width-1):
+      for y in range(0, height-1):
+        px = getPixel(makeEdgePic, x, y)
+        right = getPixel(makeEdgePic, x + 1, y)
+        below = getPixel(makeEdgePic, x, y + 1)
+        luminance=lambda px: (getRed(px)*0.299)+(getGreen(px)*0.587)+(getBlue(px)*0.114)
+        lumOverall=luminance(px)
+        lumRight=luminance(right)
+        lumBelow=luminance(below)
+        if abs(lumRight-lumOverall) > 5 and abs(lumBelow-lumOverall) > 5:
+          setColor(px, black)
+        else:
+          setColor(px, white)
+    printNow('Now saving: '+str(file))
+    writePictureTo(makeEdgePic, 'EDGE'+str(file))
+  printNow('PROCESS COMPLETE')
 
 if selection == 1:
   negativePicture(folDir)
@@ -161,7 +189,8 @@ elif selection == 3:
   greyscalePicture(folDir)
   movieMaker(folDir)
 elif selection == 4:
-  something3
+  edgeDetection(folDir)
+  movieMaker(folDir)
 elif selection == 5:
   blackWhitePicture(folDir)
   movieMaker(folDir)
