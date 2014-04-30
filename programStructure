@@ -1,15 +1,21 @@
 printNow ('Welcome to the Movie Transformer!')
-printNow ('Your options include:'+'\n'+'1--Negation'+'\n'+'2--Flip across vertical axis'+'\n'+'3--Grayscale'+'\n'+'4--Edge Detection'+'\n'+'5--Pure Black & White(AKA Stamp Effect)'+'\n'+'6--Blur Effect'+'\n'+'7--Faded Effect')
-selection = input('Please enter your selection now: ')
+while True:
+  printNow ('Your options include:'+'\n'+'1--Negation'+'\n'+'2--Flip across vertical axis'+'\n'+'3--Grayscale'+'\n'+'4--Edge Detection'+'\n'+'5--Pure Black & White(AKA Stamp Effect)'+'\n'+'6--Blur Effect'+'\n'+'7--Faded Effect')
+  selection = input('Please enter your selection now: ')
 
-printNow ('You entered ' + str(selection))
+  printNow ('You entered ' + str(selection))
+  if selection >= 1 and selection <=7:
+    break
+    
+printNow('============================================================================')
 printNow('Select desired folder containing frames to be processed')
 folDir = setMediaPath()
 printNow('DO NOT TOUCH FILE EXPLORER UNTIL COMPLETED')
 
 
 def movieMaker(folDir):
-  printNow('Now select first modified frame to use for movie')
+  printNow('============================================================================')
+  printNow('Now select first modified frame to use for first frame in movie')
   newMovie = makeMovieFromInitialFile(pickAFile())
   playMovie(newMovie)
   writeAVI(newMovie, folDir, 24)
@@ -165,5 +171,3 @@ elif selection == 6:
 elif selection == 7:
   fadedPicture(folDir)
   movieMaker(folDir)
-else:
-  something6
