@@ -8,7 +8,7 @@ folDir = setMediaPath()
 printNow('DO NOT TOUCH FILE EXPLORER UNTIL COMPLETED')
 
 
-def movieMaker():
+def movieMaker(folDir):
   printNow('Now select first modified frame to use for movie')
   newMovie = makeMovieFromInitialFile(pickAFile())
   playMovie(newMovie)
@@ -57,6 +57,27 @@ def blurredPicture(folDir):
     printNow('Now saving: '+str(file))
     writePictureTo(makeRevPic, 'BLUR'+str(file))
 
+def fadedPicture(folDir):
+  for file in os.listdir(folDir):
+    printNow('Now processing: '+str(file))    
+    fadePict=makePicture(file)
+    width=getWidth(fadePict)
+    height=getHeight(fadePict)
+    makeFadedPic=makeEmptyPicture(width,height)
+    #show(fadePict)
+    for px in getPixels(fadePict):
+      newRed = (255*.3) + (getRed(px)*(.7))
+      newGreen = (255*.3) + (getGreen(px)*(.7))
+      newBlue = (255*.3) + (getBlue(px)*(.7))
+      setColor(px, makeColor(newRed, newGreen, newBlue))
+    for x in range(0, width):
+      for y in range(0, height):
+        color=getColor(getPixel(fadePict, x, y))
+        setColor(getPixel(makeFadedPic,x, y),color)
+    #show(makeFadedPic)
+    #return makeFadedPic
+    printNow('Now saving: '+str(file))
+    writePictureTo(makeFadedPic, 'FADE'+str(file))
 
 if selection == 1:
   something
@@ -73,6 +94,7 @@ elif selection == 6:
   blurredPicture(folDir)
   movieMaker(folDir)
 elif selection == 7:
-  something5
+  fadedPicture(folDir)
+  movieMaker(folDir)
 else:
   something6
