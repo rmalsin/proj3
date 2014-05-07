@@ -103,7 +103,7 @@ def blurredPicture(folDir):#creates picture that is less sharp/more fuzzy
         setGreen(px,gAverage)
         setBlue(px,bAverage)
     printNow('Now saving: '+str(file))
-    writePictureTo(makeRevPic, 'BLUR'+str(file))
+    writePictureTo(makeBlurPic, 'BLUR'+str(file))
   printNow('PROCESS COMPLETE')
 
 def fadedPicture(folDir):#makes image that is washed out with white
