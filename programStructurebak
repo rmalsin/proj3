@@ -8,7 +8,7 @@ while True:
     break
     
 printNow('============================================================================')
-printNow('Select desired folder containing frames to be processed')#specify folder containing all the stuff
+printNow('Select desired folder containing ONLY the frames to be processed')#specify folder containing all the stuff
 folDir = setMediaPath()
 printNow('DO NOT TOUCH FILE EXPLORER UNTIL COMPLETED')#necessary warning, based on personal experience
 
