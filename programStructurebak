@@ -1,7 +1,7 @@
-printNow ('Welcome to the Movie Transformer!')
+printNow ('Welcome to the Movie Transformer!')#introduction message
 while True:
   printNow ('Your options include:'+'\n'+'1--Negation'+'\n'+'2--Flip across vertical axis'+'\n'+'3--Grayscale'+'\n'+'4--Edge Detection'+'\n'+'5--Pure Black & White(AKA Stamp Effect)'+'\n'+'6--Blur Effect'+'\n'+'7--Faded Effect')
-  selection = input('Please enter your selection now: ')
+  selection = input('Please enter your selection now: ')#menu for user
 
   printNow ('You entered ' + str(selection))#input error checking
   if selection >= 1 and selection <=7:
@@ -15,29 +15,28 @@ printNow('DO NOT TOUCH FILE EXPLORER UNTIL COMPLETED')#necessary warning, based 
 
 def movieMaker(folDir):#makes movie
   printNow('============================================================================')
-  printNow('Now select first modified frame to use for first frame in movie')
+  printNow('Now select first modified frame to use for first frame in movie')#user must select first frame in sequence of in-order filenames
   newMovie = makeMovieFromInitialFile(pickAFile())
-  playMovie(newMovie)
+  playMovie(newMovie)#opens movie through JES, also allowing for selection of AVI saving
   writeAVI(newMovie, folDir, 24)
 
 def negativePicture(folDir):#makes colors opposite    
-  for file in os.listdir(folDir):
-    printNow('Now processing: '+str(file))
+  for file in os.listdir(folDir): #for all files in directory
+    printNow('Now processing: '+str(file))#message for notifying of progress
     negPict=makePicture(file)
-    width=getWidth(negPict)
+    width=getWidth(negPict)#gets dimensions
     height=getHeight(negPict)
-    makeNegPic=makeEmptyPicture(width,height)
-    #show(negPict)
-    for px in getPixels(negPict):
+    makeNegPic=makeEmptyPicture(width,height)#makes pic copy
+    for px in getPixels(negPict):#grabs RGB values
       red=getRed(px)
       green=getGreen(px)
       blue=getBlue(px)
-      setColor (px, makeColor(255-red, 255-green, 255-blue))
+      setColor (px, makeColor(255-red, 255-green, 255-blue))#makes color the exact opposite RGB values
     for x in range(0, width):
       for y in range(0, height):
         color=getColor(getPixel(negPict, x, y))
         setColor(getPixel(makeNegPic,x, y),color)
-    printNow('Now saving: '+str(file))
+    printNow('Now saving: '+str(file))#saves pic
     writePictureTo(makeNegPic, 'NEG'+str(file))
   printNow('PROCESS COMPLETE')
 
@@ -51,7 +50,7 @@ def reversePicture(folDir): #flips across y-axis
       for x in range(0, width):
         for y in range(0, height):
           color=getColor(getPixel(revPict, x, y))
-          setColor(getPixel(makeRevPic,width-x-1, y),color)
+          setColor(getPixel(makeRevPic,width-x-1, y),color)#places pixel in opposite side of canvas
       printNow('Now saving: '+str(file))
       writePictureTo(makeRevPic, 'REV'+str(file))
     printNow('PROCESS COMPLETE')
@@ -63,7 +62,7 @@ def greyscalePicture(folDir):#makes image into various tints and shades of gray
     width=getWidth(greyPict)
     height=getHeight(greyPict)
     makeGreyPic=makeEmptyPicture(width,height)
-    for px in getPixels(greyPict):
+    for px in getPixels(greyPict):#makes colors into various intensities of grey
       greyRed=getRed(px)*0.299
       greyGreen=getGreen(px)*0.587
       greyBlue=getBlue(px)*0.114
@@ -72,7 +71,7 @@ def greyscalePicture(folDir):#makes image into various tints and shades of gray
     for x in range(0, width):
       for y in range(0, height):
         color=getColor(getPixel(greyPict, x, y))
-        setColor(getPixel(makeGreyPic,x, y),color)
+        setColor(getPixel(makeGreyPic,x, y),color)#changes the colors
     printNow('Now saving: '+str(file))
     writePictureTo(makeGreyPic, 'GREY'+str(file))
   printNow('PROCESS COMPLETE')
@@ -113,8 +112,7 @@ def fadedPicture(folDir):#makes image that is washed out with white
     width=getWidth(fadePict)
     height=getHeight(fadePict)
     makeFadedPic=makeEmptyPicture(width,height)
-    #show(fadePict)
-    for px in getPixels(fadePict):
+    for px in getPixels(fadePict):#reduces the intensity of the colors
       newRed = (255*.3) + (getRed(px)*(.7))
       newGreen = (255*.3) + (getGreen(px)*(.7))
       newBlue = (255*.3) + (getBlue(px)*(.7))
@@ -139,7 +137,7 @@ def blackWhitePicture(folDir): #makes colors into either full black or full whit
       green=getGreen(px)
       blue=getBlue(px)
       bwIndicator=((red+blue+green)/3)
-      if bwIndicator > 127:
+      if bwIndicator > 127:#based on color value, color turned into either white or black
         setColor (px, makeColor(255, 255, 255))
       else:
         setColor (px, makeColor(0, 0, 0))
@@ -163,7 +161,7 @@ def edgeDetection(folDir):#creates image into outlines
         color=getColor(getPixel(edgePict, x, y))
         setColor(getPixel(makeEdgePic,x, y),color)
     for x in range(0, width-1):
-      for y in range(0, height-1):
+      for y in range(0, height-1):#colors changed to black or white based on differences in luminance
         px = getPixel(makeEdgePic, x, y)
         right = getPixel(makeEdgePic, x + 1, y)
         below = getPixel(makeEdgePic, x, y + 1)
@@ -179,6 +177,8 @@ def edgeDetection(folDir):#creates image into outlines
     writePictureTo(makeEdgePic, 'EDGE'+str(file))
   printNow('PROCESS COMPLETE')
 
+
+#the various pathways for the processing of the file based on the input of the user at the selection screen
 if selection == 1:
   negativePicture(folDir)
   movieMaker(folDir)
