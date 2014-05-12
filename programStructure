@@ -1,43 +1,202 @@
-printNow ('Welcome to the Movie Transformer!')
-printNow ('Your options include:'+'\n'+'1--Negation'+'\n'+'2--Flip across vertical axis'+'\n'+'3--Grayscale'+'\n'+'4--Edge Detection'+'\n'+'5--Pure Black & White')
-selection = input('Please enter your selection now :')
+printNow ('Welcome to the Movie Transformer!')#introduction message
+while True:
+  printNow ('Your options include:'+'\n'+'1--Negation'+'\n'+'2--Flip across vertical axis'+'\n'+'3--Grayscale'+'\n'+'4--Edge Detection'+'\n'+'5--Pure Black & White(AKA Stamp Effect)'+'\n'+'6--Blur Effect'+'\n'+'7--Faded Effect')
+  selection = input('Please enter your selection now: ')#menu for user
 
-printNow ('You entered ' + str(selection))
-printNow('Select desired folder containing frames to be processed')
+  printNow ('You entered :' + str(selection))#input error checking
+  if selection >= 1 and selection <=7:
+    break
+    
+printNow('============================================================================')
+printNow('Select desired folder containing ONLY the frames to be processed')#specify folder containing all the stuff
+folDir = setMediaPath()
+printNow('DO NOT TOUCH FILE EXPLORER UNTIL COMPLETED')#necessary warning, based on personal experience
 
-#makeMovieFromInitialFile() to make movie from frames
-#testString = "F:/205/project 3/tester pix/test0000.jpg"
-#result = makeMovieFromInitialFile(testString)
-#playMovie(result)
-#something about os.listdir() and setMediaPath
-def reversePicture():
-    #revFile=pickAFile()
-    folDir = setMediaPath()
+
+def movieMaker(folDir):#makes movie
+  printNow('============================================================================')
+  printNow('Now select first modified frame to use for first frame in movie')#user must select first frame in sequence of in-order filenames
+  newMovie = makeMovieFromInitialFile(pickAFile())
+  playMovie(newMovie)#opens movie through JES, also allowing for selection of AVI saving
+  writeAVI(newMovie, folDir, 24)
+
+def negativePicture(folDir):#makes colors opposite    
+  for file in os.listdir(folDir): #for all files in directory
+    printNow('Now processing: '+str(file))#message for notifying of progress
+    negPict=makePicture(file)
+    width=getWidth(negPict)#gets dimensions
+    height=getHeight(negPict)
+    makeNegPic=makeEmptyPicture(width,height)#makes pic copy
+    for px in getPixels(negPict):#grabs RGB values
+      red=getRed(px)
+      green=getGreen(px)
+      blue=getBlue(px)
+      setColor (px, makeColor(255-red, 255-green, 255-blue))#makes color the exact opposite RGB values
+    for x in range(0, width):
+      for y in range(0, height):
+        color=getColor(getPixel(negPict, x, y))
+        setColor(getPixel(makeNegPic,x, y),color)
+    printNow('Now saving: '+str(file))#saves pic
+    writePictureTo(makeNegPic, 'NEG'+str(file))
+  printNow('PROCESS COMPLETE')
+
+def reversePicture(folDir): #flips across y-axis
     for file in os.listdir(folDir):
       printNow('Now processing: '+str(file))
       revPict=makePicture(file)
       width=getWidth(revPict)
       height=getHeight(revPict)
       makeRevPic=makeEmptyPicture(width,height)
-      #Now, do the actual copying
       for x in range(0, width):
         for y in range(0, height):
           color=getColor(getPixel(revPict, x, y))
-          setColor(getPixel(makeRevPic,width-x-1, y),color)
-      #show(revPict)
-      #show(makeRevPic)
-      #return makeRevPic
-      printNow('Now saving:'+str(file))
+          setColor(getPixel(makeRevPic,width-x-1, y),color)#places pixel in opposite side of canvas
+      printNow('Now saving: '+str(file))
       writePictureTo(makeRevPic, 'REV'+str(file))
+    printNow('PROCESS COMPLETE')
+      
+def greyscalePicture(folDir):#makes image into various tints and shades of gray    
+  for file in os.listdir(folDir):
+    printNow('Now processing: '+str(file))
+    greyPict=makePicture(file)
+    width=getWidth(greyPict)
+    height=getHeight(greyPict)
+    makeGreyPic=makeEmptyPicture(width,height)
+    for px in getPixels(greyPict):#makes colors into various intensities of grey
+      greyRed=getRed(px)*0.299
+      greyGreen=getGreen(px)*0.587
+      greyBlue=getBlue(px)*0.114
+      greyColor=greyRed + greyGreen + greyBlue
+      setColor(px, makeColor(greyColor, greyColor, greyColor))
+    for x in range(0, width):
+      for y in range(0, height):
+        color=getColor(getPixel(greyPict, x, y))
+        setColor(getPixel(makeGreyPic,x, y),color)#changes the colors
+    printNow('Now saving: '+str(file))
+    writePictureTo(makeGreyPic, 'GREY'+str(file))
+  printNow('PROCESS COMPLETE')
 
-if selection == 1:
-  something
-elif selection == 2:
-  reversePicture()
+def blurredPicture(folDir):#creates picture that is less sharp/more fuzzy
+  for file in os.listdir(folDir):
+    printNow('Now processing: '+str(file))
+    blurPict=makePicture(file)
+    width=getWidth(blurPict)
+    height=getHeight(blurPict)
+    makeBlurPic=makeEmptyPicture(width-10,height)
+    for px in getPixels(makeBlurPic):
+      x=getX(px)
+      y=getY(px)
+      if (x+10<width):
+        rTotal=0
+        gTotal=0
+        bTotal=0
+        for i in range(0,10):
+           origpx=getPixel(blurPict,x+i,y)
+           rTotal=rTotal+getRed(origpx)
+           gTotal=gTotal+getGreen(origpx)
+           bTotal=bTotal+getBlue(origpx)
+        rAverage=(rTotal/10)
+        gAverage=(gTotal/10)
+        bAverage=(bTotal/10)
+        setRed(px,rAverage)
+        setGreen(px,gAverage)
+        setBlue(px,bAverage)
+    printNow('Now saving: '+str(file))
+    writePictureTo(makeBlurPic, 'BLUR'+str(file))
+  printNow('PROCESS COMPLETE')
+
+def fadedPicture(folDir):#makes image that is washed out with white
+  for file in os.listdir(folDir):
+    printNow('Now processing: '+str(file))    
+    fadePict=makePicture(file)
+    width=getWidth(fadePict)
+    height=getHeight(fadePict)
+    makeFadedPic=makeEmptyPicture(width,height)
+    for px in getPixels(fadePict):#reduces the intensity of the colors
+      newRed = (255*.3) + (getRed(px)*(.7))
+      newGreen = (255*.3) + (getGreen(px)*(.7))
+      newBlue = (255*.3) + (getBlue(px)*(.7))
+      setColor(px, makeColor(newRed, newGreen, newBlue))
+    for x in range(0, width):
+      for y in range(0, height):
+        color=getColor(getPixel(fadePict, x, y))
+        setColor(getPixel(makeFadedPic,x, y),color)
+    printNow('Now saving: '+str(file))
+    writePictureTo(makeFadedPic, 'FADE'+str(file))
+  printNow('PROCESS COMPLETE')
+
+def blackWhitePicture(folDir): #makes colors into either full black or full white (like a stamp)
+  for file in os.listdir(folDir):
+    printNow('Now processing: '+str(file))    
+    bwPict=makePicture(file)
+    width=getWidth(bwPict)
+    height=getHeight(bwPict)
+    makeBlackWhitePic=makeEmptyPicture(width,height)
+    for px in getPixels(bwPict):
+      red=getRed(px)
+      green=getGreen(px)
+      blue=getBlue(px)
+      bwIndicator=((red+blue+green)/3)
+      if bwIndicator > 127:#based on color value, color turned into either white or black
+        setColor (px, makeColor(255, 255, 255))
+      else:
+        setColor (px, makeColor(0, 0, 0))
+    for x in range(0, width):
+      for y in range(0, height):
+        color=getColor(getPixel(bwPict, x, y))
+        setColor(getPixel(makeBlackWhitePic,x, y),color)
+    printNow('Now saving: '+str(file))
+    writePictureTo(makeBlackWhitePic, 'BW'+str(file))
+  printNow('PROCESS COMPLETE')
   
+def edgeDetection(folDir):#creates image into outlines
+  for file in os.listdir(folDir):
+    printNow('Now processing: '+str(file))
+    edgePict=makePicture(file)
+    width=getWidth(edgePict)
+    height=getHeight(edgePict)
+    makeEdgePic=makeEmptyPicture(width,height)
+    for x in range(0, width):
+      for y in range(0, height):
+        color=getColor(getPixel(edgePict, x, y))
+        setColor(getPixel(makeEdgePic,x, y),color)
+    for x in range(0, width-1):
+      for y in range(0, height-1):#colors changed to black or white based on differences in luminance
+        px = getPixel(makeEdgePic, x, y)
+        right = getPixel(makeEdgePic, x + 1, y)
+        below = getPixel(makeEdgePic, x, y + 1)
+        luminance=lambda px: (getRed(px)*0.299)+(getGreen(px)*0.587)+(getBlue(px)*0.114)
+        lumOverall=luminance(px)
+        lumRight=luminance(right)
+        lumBelow=luminance(below)
+        if abs(lumRight-lumOverall) > 5 and abs(lumBelow-lumOverall) > 5:
+          setColor(px, black)
+        else:
+          setColor(px, white)
+    printNow('Now saving: '+str(file))
+    writePictureTo(makeEdgePic, 'EDGE'+str(file))
+  printNow('PROCESS COMPLETE')
+
+
+#the various pathways for the processing of the file based on the input of the user at the selection screen
+if selection == 1:
+  negativePicture(folDir)
+  movieMaker(folDir)
+elif selection == 2:
+  reversePicture(folDir)
+  movieMaker(folDir)
 elif selection == 3:
-  something2
+  greyscalePicture(folDir)
+  movieMaker(folDir)
 elif selection == 4:
-  something3
-else:
-  something4
+  edgeDetection(folDir)
+  movieMaker(folDir)
+elif selection == 5:
+  blackWhitePicture(folDir)
+  movieMaker(folDir)
+elif selection == 6:
+  blurredPicture(folDir)
+  movieMaker(folDir)
+elif selection == 7:
+  fadedPicture(folDir)
+  movieMaker(folDir)
