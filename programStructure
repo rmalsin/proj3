@@ -1,3 +1,8 @@
+#Frame-to-movie program
+#Created by Rebecca Malsin and Jose Luna
+#CST-205 Spring 2014
+#Takes still frames, puts them through filters based on user input, and assembles them into movie file
+
 printNow ('Welcome to the Movie Transformer!')#introduction message
 while True:
   printNow ('Your options include:'+'\n'+'1--Negation'+'\n'+'2--Flip across vertical axis'+'\n'+'3--Grayscale'+'\n'+'4--Edge Detection'+'\n'+'5--Pure Black & White(AKA Stamp Effect)'+'\n'+'6--Blur Effect'+'\n'+'7--Faded Effect')
