@@ -17,6 +17,7 @@ printNow('Select desired folder containing ONLY the frames to be processed')#spe
 folDir = setMediaPath()
 printNow('DO NOT TOUCH FILE EXPLORER UNTIL COMPLETED')#necessary warning, based on personal experience
 
+#below are the functions that are used:
 
 def movieMaker(folDir):#makes movie
   printNow('============================================================================')
