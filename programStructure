@@ -95,15 +95,15 @@ def blurredPicture(folDir):#creates picture that is less sharp/more fuzzy
         rTotal=0
         gTotal=0
         bTotal=0
-        for i in range(0,10):
-           origpx=getPixel(blurPict,x+i,y)
+        for i in range(0,10): #this part of the program works by taking the color of the pixed and the pixels ten to the side of it
+           origpx=getPixel(blurPict,x+i,y) 
            rTotal=rTotal+getRed(origpx)
            gTotal=gTotal+getGreen(origpx)
            bTotal=bTotal+getBlue(origpx)
-        rAverage=(rTotal/10)
+        rAverage=(rTotal/10) #it averages all the pixels in that ten pixel radius
         gAverage=(gTotal/10)
         bAverage=(bTotal/10)
-        setRed(px,rAverage)
+        setRed(px,rAverage) #this makes the picture blurrier
         setGreen(px,gAverage)
         setBlue(px,bAverage)
     printNow('Now saving: '+str(file))
