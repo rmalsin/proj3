@@ -174,8 +174,8 @@ def edgeDetection(folDir):#creates image into outlines
         lumOverall=luminance(px)
         lumRight=luminance(right)
         lumBelow=luminance(below)
-        if abs(lumRight-lumOverall) > 5 and abs(lumBelow-lumOverall) > 5:
-          setColor(px, black)
+        if abs(lumRight-lumOverall) > 5 and abs(lumBelow-lumOverall) > 5: #it checks to see if the luminance to the right and the left of the pixel is wildly different than the one of the pixel
+          setColor(px, black) #if it IS way different then the pixel that means it must be an edge! which means it goes black
         else:
           setColor(px, white)
     printNow('Now saving: '+str(file))
